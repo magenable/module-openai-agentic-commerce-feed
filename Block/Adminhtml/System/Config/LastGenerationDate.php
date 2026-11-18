@@ -12,28 +12,45 @@ use Magento\Framework\Data\Form\Element\AbstractElement;
 
 class LastGenerationDate extends Field
 {
+    /**
+     * @var LastGenerationDateViewModel
+     */
     private LastGenerationDateViewModel $viewModel;
 
+    /**
+     * Initialize the configuration field template.
+     *
+     * @param Context $context
+     * @param LastGenerationDateViewModel $viewModel
+     * @param array $data
+     * @param SecureHtmlRenderer|null $secureRenderer
+     */
     public function __construct(
         Context $context,
         LastGenerationDateViewModel $viewModel,
         array $data = [],
         ?SecureHtmlRenderer $secureRenderer = null
     ) {
+        $data['template'] = 'Magenable_OpenAIAgenticCommerceFeed::system/config/last-generation-date.phtml';
         parent::__construct($context, $data, $secureRenderer);
         $this->viewModel = $viewModel;
     }
 
+    /**
+     * @inheritdoc
+     */
     protected function _prepareLayout()
     {
         if (!$this->viewModel->getDate()) {
             return $this;
         }
         parent::_prepareLayout();
-        $this->setTemplate('Magenable_OpenAIAgenticCommerceFeed::system/config/last-generation-date.phtml');
         return $this;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function render(AbstractElement $element)
     {
         if (!$this->viewModel->getDate()) {
@@ -44,11 +61,19 @@ class LastGenerationDate extends Field
         return parent::render($element);
     }
 
+    /**
+     * Return the configuration field view model.
+     *
+     * @return LastGenerationDateViewModel
+     */
     public function getViewModel(): LastGenerationDateViewModel
     {
         return $this->viewModel;
     }
 
+    /**
+     * @inheritdoc
+     */
     protected function _getElementHtml(AbstractElement $element): string
     {
         $this->addData(

@@ -5,17 +5,31 @@ declare(strict_types=1);
 namespace Magenable\OpenAIAgenticCommerceFeed\Block\Adminhtml\System\Config;
 
 use Magento\Config\Block\System\Config\Form\Field;
+use Magento\Backend\Block\Template\Context;
+use Magento\Framework\View\Helper\SecureHtmlRenderer;
 use Magento\Framework\Data\Form\Element\AbstractElement;
 
 class GenerateFeedFiles extends Field
 {
-    protected function _prepareLayout()
-    {
-        parent::_prepareLayout();
-        $this->setTemplate('Magenable_OpenAIAgenticCommerceFeed::system/config/generate-feed-files.phtml');
-        return $this;
+    /**
+     * Initialize the configuration field template.
+     *
+     * @param Context $context
+     * @param array $data
+     * @param SecureHtmlRenderer|null $secureRenderer
+     */
+    public function __construct(
+        Context $context,
+        array $data = [],
+        ?SecureHtmlRenderer $secureRenderer = null
+    ) {
+        $data['template'] = 'Magenable_OpenAIAgenticCommerceFeed::system/config/generate-feed-files.phtml';
+        parent::__construct($context, $data, $secureRenderer);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function render(AbstractElement $element)
     {
         $element = clone $element;
@@ -23,6 +37,9 @@ class GenerateFeedFiles extends Field
         return parent::render($element);
     }
 
+    /**
+     * @inheritdoc
+     */
     protected function _getElementHtml(AbstractElement $element): string
     {
         $originalData = $element->getOriginalData();
@@ -40,6 +57,11 @@ class GenerateFeedFiles extends Field
         return $this->_toHtml();
     }
 
+    /**
+     * Return the configuration fields sent with the feed request.
+     *
+     * @return array
+     */
     protected function _getFieldMapping()
     {
         return [

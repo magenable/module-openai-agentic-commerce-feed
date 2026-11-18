@@ -12,25 +12,33 @@ use Magento\Framework\Data\Form\Element\AbstractElement;
 
 class GenerationProgress extends Field
 {
+    /**
+     * @var GenerationProgressViewModel
+     */
     private GenerationProgressViewModel $viewModel;
 
+    /**
+     * Initialize the configuration field template.
+     *
+     * @param Context $context
+     * @param GenerationProgressViewModel $viewModel
+     * @param array $data
+     * @param SecureHtmlRenderer|null $secureRenderer
+     */
     public function __construct(
         Context $context,
         GenerationProgressViewModel $viewModel,
         array $data = [],
         ?SecureHtmlRenderer $secureRenderer = null
     ) {
+        $data['template'] = 'Magenable_OpenAIAgenticCommerceFeed::system/config/generation-progress.phtml';
         parent::__construct($context, $data, $secureRenderer);
         $this->viewModel = $viewModel;
     }
 
-    protected function _prepareLayout()
-    {
-        parent::_prepareLayout();
-        $this->setTemplate('Magenable_OpenAIAgenticCommerceFeed::system/config/generation-progress.phtml');
-        return $this;
-    }
-
+    /**
+     * @inheritdoc
+     */
     public function render(AbstractElement $element)
     {
         $element = clone $element;
@@ -38,11 +46,19 @@ class GenerationProgress extends Field
         return parent::render($element);
     }
 
+    /**
+     * Return the configuration field view model.
+     *
+     * @return GenerationProgressViewModel
+     */
     public function getViewModel(): GenerationProgressViewModel
     {
         return $this->viewModel;
     }
 
+    /**
+     * @inheritdoc
+     */
     protected function _getElementHtml(AbstractElement $element): string
     {
         $this->addData(
